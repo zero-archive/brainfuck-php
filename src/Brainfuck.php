@@ -92,9 +92,10 @@ class Brainfuck
                 echo chr($this->cells[$this->pointer]);
                 break;
             case ',' :
-                if (isset($this->input[$this->input_pointer + 1])) {
-                    $this->cells[$this->pointer] = ord($this->input[$this->input_pointer++]);
+                if (isset($this->input[$this->input_pointer])) {
+                    $this->cells[$this->pointer] = ord($this->input[$this->input_pointer]);
                 }
+                $this->input_pointer++;
                 break;
             case '[' :
                 if($this->cells[$this->pointer] == 0)
