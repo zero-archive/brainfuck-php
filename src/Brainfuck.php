@@ -41,6 +41,8 @@ class Brainfuck
      */
     private $buffer = array();
 
+    private $output = '';
+
     /**
      * @param string $code
      * @param string $input
@@ -54,12 +56,18 @@ class Brainfuck
     /**
      * Execute interpreter
      */
-    public function run()
+    public function run($return = false)
     {
         while($this->code_pointer < strlen($this->code))
         {
             $this->interpret($this->code[$this->code_pointer]);
             $this->code_pointer++;
+        }
+
+        if ($return) {
+            return $this->output;
+        } else {
+            echo $this->output;
         }
     }
 
@@ -89,7 +97,7 @@ class Brainfuck
                 $this->cells[$this->pointer]--;
                 break;
             case '.' :
-                echo chr($this->cells[$this->pointer]);
+                $this->output .= chr($this->cells[$this->pointer]);
                 break;
             case ',' :
                 if (isset($this->input[$this->input_pointer])) {
