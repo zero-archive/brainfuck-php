@@ -19,47 +19,66 @@ namespace dotzero;
 class Brainfuck
 {
     /**
-     * Source code & pointer
+     * @var null|string Source code
      */
-    private $code = NULL;
+    private $code = null;
+
+    /**
+     * @var int Source code pointer
+     */
     private $code_pointer = 0;
 
     /**
-     * Data cells & pointer
+     * @var array Data cells
      */
     private $cells = array();
+
+    /**
+     * @var int Data cell pointer
+     */
     private $pointer = 0;
 
     /**
-     * User input & pointer
+     * @var null|string User input
      */
-    private $input = NULL;
+    private $input = null;
+
+    /**
+     * @var int User input pointer
+     */
     private $input_pointer = 0;
 
     /**
-     * Stack
+     * @var array Buffer
      */
     private $buffer = array();
 
+    /**
+     * @var string Output
+     */
     private $output = '';
 
     /**
-     * @param string $code
-     * @param string $input
+     * Brainfuck constructor.
+     *
+     * @param string $code Source code
+     * @param null|string $input User input
      */
-    public function __construct($code, $input = FALSE)
+    public function __construct($code, $input = null)
     {
         $this->code = $code;
-        $this->input = ($input) ? $input : FALSE;
+        $this->input = ($input) ? $input : null;
     }
 
     /**
-     * Execute interpreter
+     * Execute Brainfuck interpreter
+     *
+     * @param bool $return
+     * @return string
      */
     public function run($return = false)
     {
-        while($this->code_pointer < strlen($this->code))
-        {
+        while ($this->code_pointer < strlen($this->code)) {
             $this->interpret($this->code[$this->code_pointer]);
             $this->code_pointer++;
         }
@@ -72,9 +91,9 @@ class Brainfuck
     }
 
     /**
-     * Commands interpreter
+     * Command interpreter
      *
-     * @param string $command
+     * @param $command
      */
     private function interpret($command)
     {
@@ -82,8 +101,7 @@ class Brainfuck
             $this->cells[$this->pointer] = 0;
         }
 
-        switch ($command)
-        {
+        switch ($command) {
             case '>' :
                 $this->pointer++;
                 break;
@@ -106,20 +124,19 @@ class Brainfuck
                 $this->input_pointer++;
                 break;
             case '[' :
-                if($this->cells[$this->pointer] == 0)
-                {
+                if ($this->cells[$this->pointer] == 0) {
                     $delta = 1;
-                    while($delta AND $this->code_pointer++ < strlen($this->code))
-                    {
-                        switch ($this->code[$this->code_pointer])
-                        {
-                            case '[' : $delta++; break;
-                            case ']' : $delta--; break;
+                    while ($delta AND $this->code_pointer++ < strlen($this->code)) {
+                        switch ($this->code[$this->code_pointer]) {
+                            case '[' :
+                                $delta++;
+                                break;
+                            case ']' :
+                                $delta--;
+                                break;
                         }
                     }
-                }
-                else
-                {
+                } else {
                     $this->buffer[] = $this->code_pointer;
                 }
                 break;

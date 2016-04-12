@@ -6,7 +6,8 @@ class BrainfuckTest extends PHPUnit_Framework_TestCase
 {
     private $examples = null;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->examples = realpath(__DIR__ . '/../examples');
     }
 
@@ -32,7 +33,8 @@ class BrainfuckTest extends PHPUnit_Framework_TestCase
     public function testExampleSort()
     {
         $code = file_get_contents($this->examples . '/sort.bf');
-        $input = array(1,2,3,4,5,6,7,8,9);
+        $input = array(1, 2, 3, 4, 5, 6, 7, 8, 9);
+
         shuffle($input);
 
         $bf = new Brainfuck($code, $input);
