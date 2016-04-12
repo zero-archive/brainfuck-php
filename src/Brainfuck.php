@@ -1,17 +1,20 @@
 <?php
+
+namespace dotzero;
+
 /**
- * BrainfuckInterpreter
+ * Class Brainfuck
  *
- * This is another implementation of interpreter for Brainfuck.
- * The brainfuck programming language is an esoteric programming language
- * noted for its extreme minimalism. It is a Turing tarpit, designed
- * to challenge and amuse programmers, and is not suitable for practical use.
+ * A PHP implementation of interpreter for Brainfuck.
  *
- * @package BrainfuckInterpreter
- * @author  dZ <mail@dotzero.ru>
- * @version 1.0 (6-feb-2011)
- * @link    http://dotzero.ru
- * @link    https://github.com/dotzero/BrainfuckInterpreter/
+ * @package dotzero
+ * @version 1.0
+ * @author dotzero <mail@dotzero.ru>
+ * @link http://www.dotzero.ru/
+ * @link https://github.com/dotzero/brainfuck-php
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 class Brainfuck
 {
@@ -67,6 +70,10 @@ class Brainfuck
      */
     private function interpret($command)
     {
+        if (!isset($this->cells[$this->pointer])) {
+            $this->cells[$this->pointer] = 0;
+        }
+
         switch ($command)
         {
             case '>' :
@@ -85,7 +92,9 @@ class Brainfuck
                 echo chr($this->cells[$this->pointer]);
                 break;
             case ',' :
-                $this->cells[$this->pointer] = ord($this->input[$this->imput_pointer++]);
+                if (isset($this->input[$this->input_pointer + 1])) {
+                    $this->cells[$this->pointer] = ord($this->input[$this->input_pointer++]);
+                }
                 break;
             case '[' :
                 if($this->cells[$this->pointer] == 0)
