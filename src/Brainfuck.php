@@ -59,15 +59,21 @@ class Brainfuck
     private $output = '';
 
     /**
+     * @var boolean Wrap over/underflows?
+     */
+    private $wrap = true;
+
+    /**
      * Brainfuck constructor.
      *
      * @param string $code Source code
      * @param null|string $input User input
      */
-    public function __construct($code, $input = null)
+    public function __construct($code, $input = null, $wrap = null)
     {
         $this->code = $code;
         $this->input = ($input) ? $input : null;
+        $this->wrap = (boolean) $wrap;
     }
 
     /**
@@ -110,9 +116,15 @@ class Brainfuck
                 break;
             case '+' :
                 $this->cells[$this->pointer]++;
+                if ($this->wrap && $this->cells[$this->pointer] > 255) {
+                    $this->cells[$this->pointer] = 0;
+                }
                 break;
             case '-' :
                 $this->cells[$this->pointer]--;
+                if ($this->wrap && $this->cells[$this->pointer] < 0) {
+                    $this->cells[$this->pointer] = 255;
+                }
                 break;
             case '.' :
                 $this->output .= chr($this->cells[$this->pointer]);
