@@ -118,9 +118,7 @@ class Brainfuck
                 $this->output .= chr($this->cells[$this->pointer]);
                 break;
             case ',' :
-                if (isset($this->input[$this->input_pointer])) {
-                    $this->cells[$this->pointer] = ord($this->input[$this->input_pointer]);
-                }
+                $this->cells[$this->pointer] = isset($this->input[$this->input_pointer]) ? ord($this->input[$this->input_pointer]) : 0;
                 $this->input_pointer++;
                 break;
             case '[' :
