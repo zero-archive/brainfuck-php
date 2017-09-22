@@ -84,6 +84,10 @@ class Brainfuck {
      */
     public function setCode($code = '') {
         $this->code = $code;
+        //clearing object instance data during new code setting
+        $this->code_pointer=0;
+        $this->cells=array();
+        $this->output='';
     }
 
     /**
@@ -95,6 +99,8 @@ class Brainfuck {
      */
     public function setInput($input = null) {
         $this->input = ($input) ? $input : null;
+        //clearing input data
+        $this->input_pointer=0;
     }
 
     /**
