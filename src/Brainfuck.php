@@ -72,7 +72,7 @@ class Brainfuck {
     public function __construct($code = '', $input = null, $wrap = null) {
         $this->setCode($code);
         $this->setInput($input);
-        $this->wrap = (boolean) $wrap;
+        $this->setWrap($wrap);
     }
 
     /**
@@ -109,6 +109,17 @@ class Brainfuck {
                 eval($result);
             }
         }
+    }
+
+    /**
+     * Sets instaince wrap property
+     * 
+     * @param bool $wrap
+     * 
+     * @return void
+     */
+    public function setWrap($wrap = null) {
+        $this->wrap = (boolean) $wrap;
     }
 
     /**
