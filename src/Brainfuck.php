@@ -8,7 +8,7 @@ namespace dotzero;
  * A PHP implementation of interpreter for Brainfuck.
  *
  * @package dotzero
- * @version 1.0
+ * @version 1.1
  * @author dotzero <mail@dotzero.ru>
  * @link http://www.dotzero.ru/
  * @link https://github.com/dotzero/brainfuck-php
@@ -16,8 +16,8 @@ namespace dotzero;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Brainfuck
-{
+class Brainfuck {
+
     /**
      * @var null|string Source code
      */
@@ -69,10 +69,62 @@ class Brainfuck
      * @param string $code Source code
      * @param null|string $input User input
      */
-    public function __construct($code, $input = null, $wrap = null)
-    {
+    public function __construct($code = '', $input = null, $wrap = null) {
+        $this->setCode($code);
+        $this->setInput($input);
+        $this->setWrap($wrap);
+    }
+
+    /**
+     * Sets code to execute
+     * 
+     * @param string $code
+     * 
+     * @return void
+     */
+    public function setCode($code = '') {
         $this->code = $code;
+        //clearing object instance data during new code setting
+        $this->code_pointer=0;
+        $this->cells=array();
+        $this->output='';
+    }
+
+    /**
+     * Sets users input
+     * 
+     * @param string $input
+     * 
+     * @return void
+     */
+    public function setInput($input = null) {
         $this->input = ($input) ? $input : null;
+        //clearing input data
+        $this->input_pointer=0;
+    }
+
+    /**
+     * Executes PHP code returned from run method
+     * 
+     * @return void
+     */
+    public function execute() {
+        if (!empty($this->code)) {
+            $result = $this->run(true);
+            if (!empty($result)) {
+                eval($result);
+            }
+        }
+    }
+
+    /**
+     * Sets instaince wrap property
+     * 
+     * @param bool $wrap
+     * 
+     * @return void
+     */
+    public function setWrap($wrap = null) {
         $this->wrap = (boolean) $wrap;
     }
 
@@ -82,8 +134,7 @@ class Brainfuck
      * @param bool $return
      * @return string
      */
-    public function run($return = false)
-    {
+    public function run($return = false) {
         while ($this->code_pointer < strlen($this->code)) {
             $this->interpret($this->code[$this->code_pointer]);
             $this->code_pointer++;
@@ -101,8 +152,7 @@ class Brainfuck
      *
      * @param $command
      */
-    private function interpret($command)
-    {
+    private function interpret($command) {
         if (!isset($this->cells[$this->pointer])) {
             $this->cells[$this->pointer] = 0;
         }
@@ -115,13 +165,13 @@ class Brainfuck
                 $this->pointer--;
                 break;
             case '+' :
-                $this->cells[$this->pointer]++;
+                $this->cells[$this->pointer] ++;
                 if ($this->wrap && $this->cells[$this->pointer] > 255) {
                     $this->cells[$this->pointer] = 0;
                 }
                 break;
             case '-' :
-                $this->cells[$this->pointer]--;
+                $this->cells[$this->pointer] --;
                 if ($this->wrap && $this->cells[$this->pointer] < 0) {
                     $this->cells[$this->pointer] = 255;
                 }
@@ -154,4 +204,5 @@ class Brainfuck
                 $this->code_pointer = array_pop($this->buffer) - 1;
         }
     }
+
 }
